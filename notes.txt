@@ -26,6 +26,7 @@ comment_text (Textfield)
 Watchlist:
 user 
 listing
+(SESSION)
 
 Category:
 name (charfield, max_length=20)
@@ -58,3 +59,7 @@ a listing can have one category
 one category can have multiple listings
 (one to many)
 
+TO DO:
+make user enter either image or category or both
+
+VIEWS:
