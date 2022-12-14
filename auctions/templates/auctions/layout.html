@@ -2,39 +2,68 @@
 
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <title>{% block title %}Auctions{% endblock %}</title>
-        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
-        <link href="{% static 'auctions/styles.css' %}" rel="stylesheet">
-    </head>
-    <body>
-        <h1>Auctions</h1>
-        <div>
-            {% if user.is_authenticated %}
-                Signed in as <strong>{{ user.username }}</strong>.
-            {% else %}
-                Not signed in.
-            {% endif %}
-        </div>
-        <ul class="nav">
-            <li class="nav-item">
-                <a class="nav-link" href="{% url 'index' %}">Active Listings</a>
-            </li>
-            {% if user.is_authenticated %}
+
+<head>
+    <title>{% block title %}Auctions{% endblock %}</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+        integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <link href="{% static 'auctions/styles.css' %}" rel="stylesheet">
+</head>
+
+<body>
+    <header>
+        <nav class="navbar navbar-expand-lg navbar-fixed-top navbar-dark" style="background-color: #17A2B8;">
+            <a href="{% url 'index'%}" class="navbar-brand text-white font-weight-bold font-italic">Auctions</a>
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'index' %}">Home <span class="sr-only">(current)</span></a>
+                </li>
+                {% if user.is_authenticated %}
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'create' %}">Create Listing <span
+                            class="sr-only">(current)</span></a>
+                </li>
+                {% endif%}
+            </ul>
+            <ul class="navbar-nav">
+                {% if user.is_authenticated %}
                 <li class="nav-item">
                     <a class="nav-link" href="{% url 'logout' %}">Log Out</a>
                 </li>
-            {% else %}
+                {% else %}
                 <li class="nav-item">
                     <a class="nav-link" href="{% url 'login' %}">Log In</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="{% url 'register' %}">Register</a>
                 </li>
-            {% endif %}
-        </ul>
-        <hr>
-        {% block body %}
-        {% endblock %}
-    </body>
+                {% endif %}
+            </ul>
+            {% if user.is_authenticated %}
+            <span class="navbar-text ml-2">
+                Signed in as <strong>{{ user.username }}</strong>
+                {% else %}
+                <span class="navbar-text ml-2">
+                    Not signed in
+                </span>
+                {% endif %}
+
+
+        </nav>
+    </header>
+    <main>
+        <div class="container">
+            <div class="row py-5">
+                <div class="col">
+                    {% block body %}
+                    <h1 class="text-info">{% block heading %}{% endblock %}</h1>
+                    <hr>
+                    {% endblock %}
+                </div>
+            </div>
+        </div>
+    </main>
+
+</body>
+
 </html>
