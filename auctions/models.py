@@ -11,8 +11,8 @@ class Listing(models.Model):
     title = models.CharField(max_length=80)
     description = models.TextField()
     current_price = models.DecimalField(max_digits=8, decimal_places=2)
-    image = ResizedImageField(
-        size=[500, None], upload_to='images/', default=None, null=True, blank=True)
+    image = models.ImageField(
+         upload_to='images/', default=None, null=True, blank=True)
     category = models.ForeignKey(
         "Category", on_delete=models.SET_NULL, null=True, blank=True)
 
@@ -31,8 +31,8 @@ class Listing(models.Model):
 
     def get_absolute_url(self):
         # adjust model detail view
-        pass
-        # return reverse('model-detail-view', args=[str(self.id)])
+        
+        return reverse('listing-detail', args=[str(self.id)])
 
     def __str__(self) -> str:
         return self.title

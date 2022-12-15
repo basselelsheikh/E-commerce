@@ -18,7 +18,7 @@ Active Listings
                 <div class="card-body">
                     <h5 class="card-title">{{ listing.title }}</h5>
                     <p class="card-text">{{listing.description}}</p><br>
-                    {%if listing.category %} <p class="card-text font-weight-bold">Category: {{listing.category}}</p>
+                    {%if listing.category %} <p class="card-text"><strong>Category:</strong> {{listing.category|title}}</p>
                     {%endif%}
                 </div>
                 <div class="card-footer text-muted">

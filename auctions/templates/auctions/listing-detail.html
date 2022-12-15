@@ -1,0 +1,32 @@
+{% extends 'auctions/layout.html'%}
+{% load crispy_form_tags %}
+
+{% block heading%}
+{{ listing.title }}
+{% endblock%}
+
+{% block body %}
+
+
+
+
+<div class="card">
+    {%if listing.image %}<img src="{{ listing.image.url }}" class="card-img-top" alt="listing_image">{%endif%}
+
+    <div class="card-body">
+        <h5 class="card-title">{{ listing.title }}</h5>
+        <p class="card-text">{{listing.description}}</p><br>
+        {%if listing.category %} <p class="card-text"><strong>Category:</strong> {{listing.category|title}}</p>
+        {%endif%}
+    </div>
+    <div class="card-footer text-muted">
+        {{ listing.dollar_amount}}
+    </div>
+    <a href="{{ listing.get_absolute_url }}" class="stretched-link"></a>
+</div>
+
+{% if user.is_authenticated %}
+{% crispy form %}
+{% endif %}
+
+{% endblock%}

@@ -5,7 +5,7 @@ from django.shortcuts import render
 from django.urls import reverse
 from django.contrib.auth.decorators import login_required
 from .models import User, Listing
-from .forms import CreateListingForm
+from .forms import CreateListingForm,BidForm
 
 
 def index(request):
@@ -72,9 +72,8 @@ def create_listing(request):
     if request.method == "POST":
         form = CreateListingForm(request.POST,request.FILES)
         if form.is_valid():
-            data = form.cleaned_data
-            listing = Listing(lister=request.user, title=data["title"], description=data['description'],
-                              current_price=data['current_price'], image=data['image'], category=data['category'])
+            listing = form.save(commit=False)
+            listing.lister = request.user
             listing.save()
             return HttpResponseRedirect(reverse('index'))
         else:
@@ -86,3 +85,15 @@ def create_listing(request):
         return render(request, 'auctions/create.html', context)
         
 
+def listing_detail(request,pk):
+     # if form is submitted
+    if request.method == "POST":
+        pass
+     # if first time page is requested
+    else:
+        pass
+    listing = Listing.objects.get(id=pk)
+    context={'listing': listing}
+    if request.user.is_authenticated:
+        context['form':BidForm()]
+    return render(request,"auctions/listing-detail.html",context)
