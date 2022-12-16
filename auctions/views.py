@@ -5,7 +5,7 @@ from django.shortcuts import render
 from django.urls import reverse
 from django.contrib.auth.decorators import login_required
 from .models import User, Listing
-from .forms import CreateListingForm,BidForm
+from .forms import CreateListingForm, BidForm, CommentForm
 
 
 def index(request):
@@ -66,11 +66,11 @@ def register(request):
         return render(request, "auctions/register.html")
 
 
-@login_required
+@login_required(login_url='/login')
 def create_listing(request):
     # if form is submitted
     if request.method == "POST":
-        form = CreateListingForm(request.POST,request.FILES)
+        form = CreateListingForm(request.POST, request.FILES)
         if form.is_valid():
             listing = form.save(commit=False)
             listing.lister = request.user
@@ -81,19 +81,21 @@ def create_listing(request):
             return render(request, 'auctions/create.html', context)
     # if first time page is requested
     else:
-        context = {"form" : CreateListingForm()}
+        context = {"form": CreateListingForm()}
         return render(request, 'auctions/create.html', context)
-        
 
-def listing_detail(request,pk):
-     # if form is submitted
+
+def listing_detail(request, pk):
+    # if form is submitted
     if request.method == "POST":
         pass
+
      # if first time page is requested
     else:
-        pass
-    listing = Listing.objects.get(id=pk)
-    context={'listing': listing}
-    if request.user.is_authenticated:
-        context['form':BidForm()]
-    return render(request,"auctions/listing-detail.html",context)
+        listing = Listing.objects.get(id=pk)
+        context = {'listing': listing}
+        if request.user.is_authenticated:
+            context["comment_form"]= CommentForm()
+            if listing.lister != request.user:
+                context["bid_form"]= BidForm()
+        return render(request, "auctions/listing-detail.html", context)

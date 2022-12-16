@@ -1,5 +1,5 @@
 from django.forms import ModelForm
-from auctions.models import Listing, Bid
+from auctions.models import Listing, Bid, Comment
 from django.core.exceptions import ValidationError
 from crispy_forms.layout import Submit
 from crispy_forms.helper import FormHelper
@@ -31,6 +31,9 @@ class BidForm(ModelForm):
     class Meta:
         model = Bid
         fields = ['price']
+        labels = {
+        "price": ""
+    }
 
     def clean(self):
         cleaned_data = super().clean()
@@ -49,7 +52,25 @@ class BidForm(ModelForm):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
+        self.fields['price'].widget.attrs['placeholder'] = 'Bid'
         self.helper = FormHelper()
         self.helper.form_method = 'post'
         self.helper.add_input(
-            Submit('submit', 'Add Bid', css_class="btn-info"))
+            Submit('submit', 'Place Bid', css_class="btn-info"))
+
+
+class CommentForm(ModelForm):
+    class Meta:
+        model = Comment
+        fields = ['text']
+        labels = {
+        "text": ""
+    }
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['text'].widget.attrs['placeholder'] = 'Write a comment...'
+        self.helper = FormHelper()
+        self.helper.form_method = 'post'
+        self.helper.add_input(
+            Submit('submit', 'Add Comment', css_class="btn-info"))

@@ -1,5 +1,5 @@
 {% extends 'auctions/layout.html'%}
-{% load crispy_form_tags %}
+{% load crispy_forms_tags %}
 
 {% block heading%}
 {{ listing.title }}
@@ -10,12 +10,13 @@
 
 
 
-<div class="card">
+<div class="card mb-3">
     {%if listing.image %}<img src="{{ listing.image.url }}" class="card-img-top" alt="listing_image">{%endif%}
 
     <div class="card-body">
         <h5 class="card-title">{{ listing.title }}</h5>
-        <p class="card-text">{{listing.description}}</p><br>
+        <p class="card-text">{{listing.description}}</p>
+        <p class="card-text"><strong>Listed By: </strong>{{listing.lister|title}}</p>
         {%if listing.category %} <p class="card-text"><strong>Category:</strong> {{listing.category|title}}</p>
         {%endif%}
     </div>
@@ -26,7 +27,13 @@
 </div>
 
 {% if user.is_authenticated %}
-{% crispy form %}
-{% endif %}
+{% if comment_form %}
+{% crispy comment_form %}
+{%endif%}
+
+{% if bid_form %}
+{% crispy bid_form %}
+{%endif%}
+{%endif%}
 
 {% endblock%}
