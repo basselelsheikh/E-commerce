@@ -1,4 +1,5 @@
 from django.forms import ModelForm
+from django.forms import HiddenInput
 from auctions.models import Listing, Bid, Comment
 from django.core.exceptions import ValidationError
 from crispy_forms.layout import Submit
@@ -30,24 +31,23 @@ class CreateListingForm(ModelForm):
 class BidForm(ModelForm):
     class Meta:
         model = Bid
-        fields = ['price']
+        fields = ["price"]
         labels = {
-        "price": ""
-    }
+            "price": ""
+        }
 
     def clean(self):
         cleaned_data = super().clean()
         price = self.cleaned_data.get("price")
         listing = self.instance.listing
-        if price < listing.current_price:
-            listing_bids = listing.bids
-            if listing_bids:
-                raise ValidationError(
-                    f"Bid must be greater than the current bid: {listing.current_price}"
-                )
-            else:
-                raise ValidationError(
-                    f"Bid must be at least as large as the starting bid: {listing.current_price}"
+        listing_bids = listing.bids.all()
+        if listing_bids and price <= listing.current_price:
+            raise ValidationError(
+                f"Bid must be greater than the current bid: {listing.current_price}"
+            )
+        elif price < listing.current_price:
+            raise ValidationError(
+                f"Bid must be at least as large as the starting bid: {listing.current_price}"
                 )
 
     def __init__(self, *args, **kwargs):
@@ -65,9 +65,10 @@ class CommentForm(ModelForm):
         model = Comment
         fields = ['text']
         labels = {
-        "text": ""
-        
-    }
+            "text": ""
+
+        }
+
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.fields['text'].required = False

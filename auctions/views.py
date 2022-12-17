@@ -4,7 +4,7 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render
 from django.urls import reverse
 from django.contrib.auth.decorators import login_required
-from .models import User, Listing
+from .models import User, Listing, Bid
 from .forms import CreateListingForm, BidForm, CommentForm
 
 
@@ -89,6 +89,7 @@ def listing_detail(request, pk):
     listing = Listing.objects.get(id=pk)
     # if form is submitted
     if request.method == "POST":
+        # if a comment was submitted
         if "text" in request.POST:
             comment_form = CommentForm(request.POST)
             if comment_form.is_valid():
@@ -96,7 +97,27 @@ def listing_detail(request, pk):
                 comment.commenter = request.user
                 comment.listing = listing
                 comment.save()
-            return HttpResponseRedirect(request.path_info)
+            else:
+                bid_form = BidForm()
+
+        # if a bid was submitted
+        if "price" in request.POST:
+            bid = Bid(bidder=request.user, listing=listing)
+            bid_form = BidForm(request.POST, instance=bid)
+            if bid_form.is_valid():
+                bid = bid_form.save()
+                listing.current_price = bid.price
+                listing.save()
+                return HttpResponseRedirect(request.path_info)
+            else:
+                comment_form = CommentForm()
+        context = {
+            'listing': listing,
+            "comment_form": comment_form,
+            "bid_form": bid_form
+        }
+        return render(request, "auctions/listing-detail.html", context)
+
 
      # if first time page is requested
     else:

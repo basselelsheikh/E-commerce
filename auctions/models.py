@@ -10,7 +10,7 @@ class Listing(models.Model):
         User, on_delete=models.CASCADE, related_name="listings")
     title = models.CharField(max_length=80)
     description = models.TextField()
-    current_price = models.DecimalField(max_digits=8, decimal_places=2)
+    current_price = models.DecimalField(max_digits=20, decimal_places=2)
     image = models.ImageField(
          upload_to='images/', default=None, null=True, blank=True)
     category = models.ForeignKey(
@@ -43,14 +43,14 @@ class Bid(models.Model):
         User, on_delete=models.CASCADE, related_name="bids")
     listing = models.ForeignKey(
         Listing, on_delete=models.CASCADE, related_name="bids")
-    price = models.DecimalField(max_digits=6, decimal_places=2)
+    price = models.DecimalField(max_digits=20, decimal_places=2)
 
     def get_absolute_url(self):
         # adjust model detail view
         return reverse('model-detail-view', args=[str(self.id)])
 
     def __str__(self) -> str:
-        return self.price
+        return f"{self.price} on {self.listing}" 
 
 
 class Comment(models.Model):
