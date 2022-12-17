@@ -4,7 +4,7 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render
 from django.urls import reverse
 from django.contrib.auth.decorators import login_required
-from .models import User, Listing, Bid
+from .models import User, Listing, Bid, Comment
 from .forms import CreateListingForm, BidForm, CommentForm
 
 
@@ -87,16 +87,26 @@ def create_listing(request):
 
 def listing_detail(request, pk):
     listing = Listing.objects.get(id=pk)
+    comments = listing.comments.all()
+    no_of_bids = len(listing.bids.all())
+    is_bidder = False
+    is_owner = True if listing.lister == request.user else False
+    try:
+        highest_bid = listing.bids.get(price=listing.current_price)
+        is_bidder = True if highest_bid.bidder == request.user else False
+    except:
+        pass
+
     # if form is submitted
     if request.method == "POST":
         # if a comment was submitted
         if "text" in request.POST:
-            comment_form = CommentForm(request.POST)
+            comment = Comment(commenter=request.user, listing=listing)
+            comment_form = CommentForm(request.POST, instance=comment)
             if comment_form.is_valid():
-                comment = comment_form.save(commit=False)
-                comment.commenter = request.user
-                comment.listing = listing
+                comment = comment_form.save()
                 comment.save()
+                return HttpResponseRedirect(request.path_info)
             else:
                 bid_form = BidForm()
 
@@ -114,16 +124,36 @@ def listing_detail(request, pk):
         context = {
             'listing': listing,
             "comment_form": comment_form,
-            "bid_form": bid_form
+            "bid_form": bid_form,
+            "comments": comments,
+            "is_bidder": is_bidder,
+            "no_of_bids": no_of_bids,
+            "is_owner": is_owner
         }
         return render(request, "auctions/listing-detail.html", context)
 
-
      # if first time page is requested
     else:
-        context = {'listing': listing}
+        context = {'listing': listing,
+                   "comments": comments, "is_bidder": is_bidder, "no_of_bids": no_of_bids, "is_owner": is_owner}
         if request.user.is_authenticated:
             context["comment_form"] = CommentForm()
-            if listing.lister != request.user:
+            if not is_owner:
                 context["bid_form"] = BidForm()
         return render(request, "auctions/listing-detail.html", context)
+
+
+def close_auction_view(request, pk):
+    listing = Listing.objects.get(id=pk)
+    listing.status = Listing.Status.CLOSED
+    print(listing.Status.ACTIVE)
+    listing.save()
+    return HttpResponseRedirect(listing.get_absolute_url())
+
+
+def user_listings(request, pk):
+    pass
+
+
+def user_bids(request, pk):
+    pass

@@ -21,19 +21,36 @@
         {%endif%}
     </div>
     <div class="card-footer text-muted">
-        {{ listing.dollar_amount}}
+        {{ listing.dollar_amount}} <br>
+        {{ no_of_bids }} bid(s) so far. 
+        {% if is_bidder %}
+        Your bid is the current bid
+        {%endif%}
     </div>
-    <a href="{{ listing.get_absolute_url }}" class="stretched-link"></a>
+</div>
+{% if is_owner and listing.status == listing.Status.ACTIVE %}
+<a class="btn btn-danger mb-3" href="{% url 'close-auction' pk=listing.id %}" role="button">Close Auction</a>
+{% endif %}
+
+<div class="card  mb-3">
+    <h5 class="card-header">Comments:</h5>
+    {% for comment in comments %}
+    <div class="card">
+        <div class="card-body">
+            <h5 class="card-title">{{ comment.commenter|title}}</h5>
+            <p class="card-text">{{comment.text}}</p>
+        </div>
+    </div>
+
+    {% empty %}
+    {%endfor%}
 </div>
 
-{% if user.is_authenticated %}
 {% if comment_form %}
 {% crispy comment_form %}
-{%endif%}
 
 {% if bid_form %}
 {% crispy bid_form %}
 {%endif%}
 {%endif%}
-
 {% endblock%}
