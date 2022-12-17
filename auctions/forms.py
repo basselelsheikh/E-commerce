@@ -53,6 +53,7 @@ class BidForm(ModelForm):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.fields['price'].widget.attrs['placeholder'] = 'Bid'
+        self.fields['price'].required = False
         self.helper = FormHelper()
         self.helper.form_method = 'post'
         self.helper.add_input(
@@ -65,7 +66,11 @@ class CommentForm(ModelForm):
         fields = ['text']
         labels = {
         "text": ""
+        
     }
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['text'].required = False
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)

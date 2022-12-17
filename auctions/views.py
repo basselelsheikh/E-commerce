@@ -86,16 +86,23 @@ def create_listing(request):
 
 
 def listing_detail(request, pk):
+    listing = Listing.objects.get(id=pk)
     # if form is submitted
     if request.method == "POST":
-        pass
+        if "text" in request.POST:
+            comment_form = CommentForm(request.POST)
+            if comment_form.is_valid():
+                comment = comment_form.save(commit=False)
+                comment.commenter = request.user
+                comment.listing = listing
+                comment.save()
+            return HttpResponseRedirect(request.path_info)
 
      # if first time page is requested
     else:
-        listing = Listing.objects.get(id=pk)
         context = {'listing': listing}
         if request.user.is_authenticated:
-            context["comment_form"]= CommentForm()
+            context["comment_form"] = CommentForm()
             if listing.lister != request.user:
-                context["bid_form"]= BidForm()
+                context["bid_form"] = BidForm()
         return render(request, "auctions/listing-detail.html", context)
