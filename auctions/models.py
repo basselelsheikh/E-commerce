@@ -8,13 +8,15 @@ from django_resized import ResizedImageField
 class Listing(models.Model):
     lister = models.ForeignKey(
         User, on_delete=models.CASCADE, related_name="listings")
+    winner = models.ForeignKey(
+        User, on_delete=models.SET_NULL, related_name="wins", null=True,blank=True)
     title = models.CharField(max_length=80)
     description = models.TextField()
     current_price = models.DecimalField(max_digits=20, decimal_places=2)
     image = models.ImageField(
          upload_to='images/', default=None, null=True, blank=True)
     category = models.ForeignKey(
-        "Category", on_delete=models.SET_NULL, null=True, blank=True)
+        "Category", on_delete=models.SET_NULL, null=True, blank=True, related_name="listings")
 
     class Status(models.TextChoices):
         ACTIVE = 'a'
@@ -50,7 +52,7 @@ class Bid(models.Model):
         return reverse('model-detail-view', args=[str(self.id)])
 
     def __str__(self) -> str:
-        return f"{self.price} on {self.listing}" 
+        return f"{self.bidder}: {self.price} on {self.listing}" 
 
 
 class Comment(models.Model):
@@ -76,7 +78,7 @@ class Category(models.Model):
 
     def get_absolute_url(self):
         # adjust model detail view
-        return reverse('model-detail-view', args=[str(self.id)])
+        return reverse('category-detail', args=[str(self.id)])
 
     def __str__(self) -> str:
         return self.name

@@ -6,9 +6,7 @@
 {% endblock%}
 
 {% block body %}
-
-
-
+{{ block.super }}
 
 <div class="card mb-3">
     {%if listing.image %}<img src="{{ listing.image.url }}" class="card-img-top" alt="listing_image">{%endif%}
@@ -49,7 +47,7 @@
 {% if comment_form %}
 {% crispy comment_form %}
 
-{% if bid_form %}
+{% if bid_form and listing.status == listing.Status.ACTIVE %}
 {% crispy bid_form %}
 {%endif%}
 {%endif%}

@@ -1,0 +1,44 @@
+{% extends 'auctions/layout.html'%}
+{% block heading%}
+My Bids
+{% endblock%}
+
+{% block body%}
+{{ block.super }}
+
+<div class="container">
+    {% for bid in bids %}
+    {% if forloop.counter0|divisibleby:3 %} <div class="row"> {% endif %}
+        <div class="col-md-12 col-lg-4 mb-4 ">
+            <div class="card" style="width: 18rem;">
+                <div class="card-body">
+                    <h5 class="card-title">{{ bid.listing.title }}</h5>
+                    {% if bid.listing.winner == user %}
+                    <div class="alert alert-success" role="alert">
+                        You won that auction!
+                    </div>
+                    {% endif %}
+                    <div class="card-text">Bid: {{bid.price}}</div>
+                </div>
+                <div class="card-footer text-muted">
+                    Status: {{ bid.listing.get_status_display }}
+                </div>
+
+                <a href="{{ bid.listing.get_absolute_url }}" class="stretched-link"></a>
+            </div>
+
+        </div>
+        {% if forloop.counter|divisibleby:3 or forloop.last %}
+    </div>{% endif %}
+    {% empty %}
+    <h1 class="text-info">Make some bids!</h1>
+    <a class="btn btn-info mb-3" href="{% url 'index' %}" role="button">View available listings</a>
+    {% endfor %}
+</div>
+
+
+
+
+
+
+{% endblock%}

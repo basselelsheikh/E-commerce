@@ -4,7 +4,7 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render
 from django.urls import reverse
 from django.contrib.auth.decorators import login_required
-from .models import User, Listing, Bid, Comment
+from .models import User, Listing, Bid, Comment, Category
 from .forms import CreateListingForm, BidForm, CommentForm
 
 
@@ -130,7 +130,7 @@ def listing_detail(request, pk):
             "no_of_bids": no_of_bids,
             "is_owner": is_owner
         }
-        return render(request, "auctions/listing-detail.html", context)
+        return render(request, "auctions/listing_detail.html", context)
 
      # if first time page is requested
     else:
@@ -140,20 +140,42 @@ def listing_detail(request, pk):
             context["comment_form"] = CommentForm()
             if not is_owner:
                 context["bid_form"] = BidForm()
-        return render(request, "auctions/listing-detail.html", context)
+        return render(request, "auctions/listing_detail.html", context)
 
 
 def close_auction_view(request, pk):
     listing = Listing.objects.get(id=pk)
     listing.status = Listing.Status.CLOSED
-    print(listing.Status.ACTIVE)
+    # if there are bids, get the highest bidder and set him as the winner
+    try:
+        highest_bidder = listing.bids.get(price=listing.current_price)
+        listing.winner = User.objects.get(id=highest_bidder.bidder.id)
+    except:
+        print("cant find winner")
+
     listing.save()
     return HttpResponseRedirect(listing.get_absolute_url())
 
 
 def user_listings(request, pk):
-    pass
+    listings = Listing.objects.filter(lister=request.user)
+    context = {"listings": listings}
+    return render(request, "auctions/user_listings.html", context)
 
 
 def user_bids(request, pk):
-    pass
+    bids = Bid.objects.filter(bidder=request.user)
+    context = {"bids": bids}
+    return render(request, "auctions/user_bids.html", context)
+
+
+def categories(request):
+    categories = Category.objects.all()
+    context = {
+        "categories": categories
+    }
+    return render(request, "auctions/categories.html", context)
+
+def category_detail(request,pk):
+    category = Category.objects.get(id=pk)
+    return render(request,"auctions/category_detail.html",context={"category":category, "listings": category.listings.all()})

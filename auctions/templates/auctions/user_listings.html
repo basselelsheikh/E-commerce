@@ -1,10 +1,9 @@
-{% extends "auctions/layout.html" %}
+{% extends 'auctions/layout.html'%}
+{% block heading%}
+My Listings
+{% endblock%}
 
-{% block heading %}
-Active Listings
-{% endblock %}
-
-{% block body %}
+{% block body%}
 {{ block.super }}
 
 <div class="container">
@@ -12,17 +11,11 @@ Active Listings
     {% if forloop.counter0|divisibleby:3 %} <div class="row"> {% endif %}
         <div class="col-md-12 col-lg-4 mb-4 d-flex align-items-stretch">
             <div class="card" style="width: 18rem;">
-                {%if listing.image %}<img src="{{ listing.image.url }}" class="card-img-top"
-                    alt="listing_image">{%endif%}
-
                 <div class="card-body">
                     <h5 class="card-title">{{ listing.title }}</h5>
-                    <p class="card-text">{{listing.description}}</p>
-                    {%if listing.category %} <p class="card-text"><strong>Category:</strong> {{listing.category|title}}</p>
-                    {%endif%}
                 </div>
                 <div class="card-footer text-muted">
-                    {{ listing.dollar_amount}}
+                    Status: {{ listing.get_status_display }}
                 </div>
                 <a href="{{ listing.get_absolute_url }}" class="stretched-link"></a>
             </div>
@@ -30,9 +23,9 @@ Active Listings
         {% if forloop.counter|divisibleby:3 or forloop.last %}
     </div>{% endif %}
     {% empty %}
-    <h1 class="text-info">No active auctions right now :(</h1>
+    <h1 class="text-info">Time to bake some cake!</h1>
+    <a class="btn btn-info mb-3" href="{% url 'create' %}" role="button">Add a listing</a>
     {% endfor %}
 </div>
 
-
-{% endblock %}
+{% endblock%}
