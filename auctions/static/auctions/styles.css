@@ -1,4 +1,18 @@
-
+:root {
+    --theme: #C753AB
+  }
+  
 .asteriskField {
     display: none;
 }
+
+h1 {
+    color: var(--theme);
+}
+
+.navbar
+{
+    background-color: var(--theme);
+}
+
+

@@ -28,7 +28,11 @@
 </div>
 {% if is_owner and listing.status == listing.Status.ACTIVE %}
 <a class="btn btn-danger mb-3" href="{% url 'close-auction' pk=listing.id %}" role="button">Close Auction</a>
+{% elif not is_owner %}
+<a class="btn btn-secondary mb-3" href="{% url 'add-to-watchlist' pk=listing.id %}" role="button">Add to Watchlist</a>
 {% endif %}
+
+
 
 <div class="card  mb-3">
     <h5 class="card-header">Comments:</h5>

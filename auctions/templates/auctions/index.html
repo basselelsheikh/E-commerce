@@ -18,7 +18,8 @@ Active Listings
                 <div class="card-body">
                     <h5 class="card-title">{{ listing.title }}</h5>
                     <p class="card-text">{{listing.description}}</p>
-                    {%if listing.category %} <p class="card-text"><strong>Category:</strong> {{listing.category|title}}</p>
+                    {%if listing.category %} <p class="card-text"><strong>Category:</strong> {{listing.category|title}}
+                    </p>
                     {%endif%}
                 </div>
                 <div class="card-footer text-muted">
@@ -30,7 +31,9 @@ Active Listings
         {% if forloop.counter|divisibleby:3 or forloop.last %}
     </div>{% endif %}
     {% empty %}
-    <h1 class="text-info">No active auctions right now :(</h1>
+    <div class="alert alert-dark" role="alert">
+        No active auctions right now :(
+      </div>
     {% endfor %}
 </div>
 

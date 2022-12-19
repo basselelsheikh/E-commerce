@@ -4,12 +4,12 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render
 from django.urls import reverse
 from django.contrib.auth.decorators import login_required
-from .models import User, Listing, Bid, Comment, Category
+from .models import User, Listing, Bid, Comment, Category, Watchlist
 from .forms import CreateListingForm, BidForm, CommentForm
 
 
 def index(request):
-    listings = Listing.objects.filter(status='a')
+    listings = Listing.objects.filter(status=Listing.Status.ACTIVE)
     context = {"listings": listings}
     return render(request, "auctions/index.html", context)
 
@@ -142,7 +142,7 @@ def listing_detail(request, pk):
                 context["bid_form"] = BidForm()
         return render(request, "auctions/listing_detail.html", context)
 
-
+@login_required
 def close_auction_view(request, pk):
     listing = Listing.objects.get(id=pk)
     listing.status = Listing.Status.CLOSED
@@ -156,14 +156,14 @@ def close_auction_view(request, pk):
     listing.save()
     return HttpResponseRedirect(listing.get_absolute_url())
 
-
-def user_listings(request, pk):
+@login_required
+def user_listings(request):
     listings = Listing.objects.filter(lister=request.user)
     context = {"listings": listings}
     return render(request, "auctions/user_listings.html", context)
 
-
-def user_bids(request, pk):
+@login_required
+def user_bids(request):
     bids = Bid.objects.filter(bidder=request.user)
     context = {"bids": bids}
     return render(request, "auctions/user_bids.html", context)
@@ -178,4 +178,19 @@ def categories(request):
 
 def category_detail(request,pk):
     category = Category.objects.get(id=pk)
-    return render(request,"auctions/category_detail.html",context={"category":category, "listings": category.listings.all()})
+    return render(request,"auctions/category_detail.html",context={"category":category, "listings": category.listings.filter(status=Listing.Status.ACTIVE)})
+
+@login_required
+def watchlist_view(request):
+    try:
+        listings = Watchlist.objects.get(prospect=request.user).listings
+    except:
+        listings=[]
+    return render(request, "auctions/user_watchlist.html", context={"listings": listings})
+
+@login_required
+def add_to_watchlist(request,pk):
+    watchlist = Watchlist(prospect=request.user)
+    watchlist.listings.add(Listing.objects.get(pk=pk))
+    watchlist.save()
+    return HttpResponseRedirect(reverse(""))

@@ -12,11 +12,15 @@
 
 <body>
     <header>
-        <nav class="navbar navbar-expand-lg navbar-fixed-top navbar-dark" style="background-color: #17A2B8;">
+        <nav class="navbar navbar-expand-lg navbar-fixed-top navbar-dark">
             <a href="{% url 'index'%}" class="navbar-brand text-white font-weight-bold font-italic">Auctions</a>
             <ul class="navbar-nav mr-auto">
                 <li class="nav-item">
                     <a class="nav-link" href="{% url 'index' %}">Home <span class="sr-only">(current)</span></a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'categories'%}">Categories<span
+                            class="sr-only">(current)</span></a>
                 </li>
                 {% if user.is_authenticated %}
                 <li class="nav-item">
@@ -24,19 +28,15 @@
                             class="sr-only">(current)</span></a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="{% url 'user-listings' user.id %}">My Listings<span
+                    <a class="nav-link" href="{% url 'user-listings'%}">My Listings<span
                             class="sr-only">(current)</span></a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="{% url 'user-bids' user.id%}">My Bids<span
+                    <a class="nav-link" href="{% url 'user-bids' %}">My Bids<span
                             class="sr-only">(current)</span></a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="{% url 'categories'%}">Categories<span
-                            class="sr-only">(current)</span></a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="{% url 'user-bids' user.id%}">Watchlist<span
+                    <a class="nav-link" href="{% url 'user-watchlist'%}">Watchlist<span
                             class="sr-only">(current)</span></a>
                 </li>
                 {% endif%}
@@ -72,7 +72,7 @@
             <div class="row py-5">
                 <div class="col">
                     {% block body %}
-                    <h1 class="text-info">{% block heading %}{% endblock %}</h1>
+                    <h1>{% block heading %}{% endblock %}</h1>
                     <hr>
                     {% endblock %}
                 </div>

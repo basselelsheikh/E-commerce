@@ -23,8 +23,10 @@ My Listings
         {% if forloop.counter|divisibleby:3 or forloop.last %}
     </div>{% endif %}
     {% empty %}
-    <h1 class="text-info">Time to bake some cake!</h1>
-    <a class="btn btn-info mb-3" href="{% url 'create' %}" role="button">Add a listing</a>
+    {% block empty_message%}
+    <h1>Time to bake some cake!</h1>
+    <a class="btn btn-secondary mb-3" href="{% url 'create' %}" role="button">Add a listing</a>
+    {% endblock %}
     {% endfor %}
 </div>
 

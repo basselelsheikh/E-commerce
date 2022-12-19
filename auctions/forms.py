@@ -25,7 +25,7 @@ class CreateListingForm(ModelForm):
         self.helper = FormHelper()
         self.helper.form_method = 'post'
         self.helper.add_input(
-            Submit('submit', 'Create Listing', css_class="btn-info"))
+            Submit('submit', 'Create Listing', css_class="btn btn-secondary"))
 
 
 class BidForm(ModelForm):
@@ -57,7 +57,7 @@ class BidForm(ModelForm):
         self.helper = FormHelper()
         self.helper.form_method = 'post'
         self.helper.add_input(
-            Submit('submit', 'Place Bid', css_class="btn-info"))
+            Submit('submit', 'Place Bid', css_class="btn btn-secondary"))
 
 
 class CommentForm(ModelForm):
@@ -79,4 +79,4 @@ class CommentForm(ModelForm):
         self.helper = FormHelper()
         self.helper.form_method = 'post'
         self.helper.add_input(
-            Submit('submit', 'Add Comment', css_class="btn-info"))
+            Submit('submit', 'Add Comment', css_class="btn btn-secondary"))

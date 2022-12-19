@@ -82,3 +82,9 @@ class Category(models.Model):
 
     def __str__(self) -> str:
         return self.name
+
+class Watchlist(models.Model):
+    listings = models.ManyToManyField(Listing, blank=True, related_name="watchlists")
+    prospect = models.OneToOneField(User, on_delete=models.CASCADE)
+    
+    

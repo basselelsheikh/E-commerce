@@ -17,6 +17,10 @@ My Bids
                     <div class="alert alert-success" role="alert">
                         You won that auction!
                     </div>
+                    {% elif bid.listing.winner !=  user and bid.listing.status == bid.listing.Status.CLOSED %}
+                    <div class="alert alert-danger" role="alert">
+                        You didn't win that auction :(
+                    </div>
                     {% endif %}
                     <div class="card-text">Bid: {{bid.price}}</div>
                 </div>
@@ -31,8 +35,8 @@ My Bids
         {% if forloop.counter|divisibleby:3 or forloop.last %}
     </div>{% endif %}
     {% empty %}
-    <h1 class="text-info">Make some bids!</h1>
-    <a class="btn btn-info mb-3" href="{% url 'index' %}" role="button">View available listings</a>
+    <h1>Make some bids!</h1>
+    <a class="btn btn-secondary mb-3" href="{% url 'index' %}" role="button">Browse Auctions</a>
     {% endfor %}
 </div>
 
