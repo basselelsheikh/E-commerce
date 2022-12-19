@@ -11,8 +11,8 @@
 </head>
 
 <body>
-    <header>
-        <nav class="navbar navbar-expand-lg navbar-fixed-top navbar-dark">
+    <header class="sticky-top">
+        <nav class="navbar navbar-expand-lg navbar-dark">
             <a href="{% url 'index'%}" class="navbar-brand text-white font-weight-bold font-italic">Auctions</a>
             <ul class="navbar-nav mr-auto">
                 <li class="nav-item">
@@ -32,11 +32,10 @@
                             class="sr-only">(current)</span></a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="{% url 'user-bids' %}">My Bids<span
-                            class="sr-only">(current)</span></a>
+                    <a class="nav-link" href="{% url 'user-bids' %}">My Bids<span class="sr-only">(current)</span></a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="{% url 'user-watchlist'%}">Watchlist<span
+                    <a class="nav-link" href="{% url 'user-watchlist'%}">My Watchlist<span
                             class="sr-only">(current)</span></a>
                 </li>
                 {% endif%}
@@ -63,7 +62,6 @@
                     Not signed in
                 </span>
                 {% endif %}
-
 
         </nav>
     </header>

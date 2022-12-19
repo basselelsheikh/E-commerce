@@ -1,10 +1,6 @@
 {% extends 'auctions/layout.html'%}
 {% load crispy_forms_tags %}
 
-{% block heading%}
-{{ listing.title }}
-{% endblock%}
-
 {% block body %}
 {{ block.super }}
 
@@ -12,7 +8,7 @@
     {%if listing.image %}<img src="{{ listing.image.url }}" class="card-img-top" alt="listing_image">{%endif%}
 
     <div class="card-body">
-        <h5 class="card-title">{{ listing.title }}</h5>
+        <h5 class="card-title">{{ listing.title }} {% if is_in_watchlist %} <span class="badge badge-secondary">Watchlist</span> {%endif%}</h5>
         <p class="card-text">{{listing.description}}</p>
         <p class="card-text"><strong>Listed By: </strong>{{listing.lister|title}}</p>
         {%if listing.category %} <p class="card-text"><strong>Category:</strong> {{listing.category|title}}</p>
@@ -26,7 +22,7 @@
         {%endif%}
     </div>
 </div>
-{% if is_owner and listing.status == listing.Status.ACTIVE %}
+{% if listing.lister == user and listing.status == listing.Status.ACTIVE %}
 <a class="btn btn-danger mb-3" href="{% url 'close-auction' pk=listing.id %}" role="button">Close Auction</a>
 {% elif not is_owner %}
 <a class="btn btn-secondary mb-3" href="{% url 'add-to-watchlist' pk=listing.id %}" role="button">Add to Watchlist</a>

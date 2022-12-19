@@ -90,14 +90,22 @@ def listing_detail(request, pk):
     comments = listing.comments.all()
     no_of_bids = len(listing.bids.all())
     is_bidder = False
-    is_owner = True if listing.lister == request.user else False
+
+    #check if current user is the highest bidder
     try:
         highest_bid = listing.bids.get(price=listing.current_price)
         is_bidder = True if highest_bid.bidder == request.user else False
     except:
         pass
 
-    # if form is submitted
+    #check if this listing is in the current user's watchlist
+    try:
+        Watchlist.objects.get(listings__pk=pk, prospect=request.user)
+        is_in_watchlist = True
+    except:
+        is_in_watchlist = False
+
+    # if a form was submitted
     if request.method == "POST":
         # if a comment was submitted
         if "text" in request.POST:
@@ -121,6 +129,8 @@ def listing_detail(request, pk):
                 return HttpResponseRedirect(request.path_info)
             else:
                 comment_form = CommentForm()
+
+        # if a form is not valid, bind the form and show the page again
         context = {
             'listing': listing,
             "comment_form": comment_form,
@@ -128,19 +138,23 @@ def listing_detail(request, pk):
             "comments": comments,
             "is_bidder": is_bidder,
             "no_of_bids": no_of_bids,
-            "is_owner": is_owner
+            "is_in_watchlist": is_in_watchlist
         }
         return render(request, "auctions/listing_detail.html", context)
 
      # if first time page is requested
     else:
         context = {'listing': listing,
-                   "comments": comments, "is_bidder": is_bidder, "no_of_bids": no_of_bids, "is_owner": is_owner}
+                   "comments": comments,
+                   "is_bidder": is_bidder,
+                   "no_of_bids": no_of_bids,
+                   "is_in_watchlist": is_in_watchlist}
         if request.user.is_authenticated:
             context["comment_form"] = CommentForm()
-            if not is_owner:
+            if listing.lister != request.user:
                 context["bid_form"] = BidForm()
         return render(request, "auctions/listing_detail.html", context)
+
 
 @login_required
 def close_auction_view(request, pk):
@@ -156,11 +170,13 @@ def close_auction_view(request, pk):
     listing.save()
     return HttpResponseRedirect(listing.get_absolute_url())
 
+
 @login_required
 def user_listings(request):
     listings = Listing.objects.filter(lister=request.user)
     context = {"listings": listings}
     return render(request, "auctions/user_listings.html", context)
+
 
 @login_required
 def user_bids(request):
@@ -169,28 +185,35 @@ def user_bids(request):
     return render(request, "auctions/user_bids.html", context)
 
 
-def categories(request):
+def categories_view(request):
     categories = Category.objects.all()
     context = {
         "categories": categories
     }
     return render(request, "auctions/categories.html", context)
 
-def category_detail(request,pk):
+
+def category_detail(request, pk):
     category = Category.objects.get(id=pk)
-    return render(request,"auctions/category_detail.html",context={"category":category, "listings": category.listings.filter(status=Listing.Status.ACTIVE)})
+    return render(request, "auctions/category_detail.html", context={"category": category, "listings": category.listings.filter(status=Listing.Status.ACTIVE)})
+
 
 @login_required
 def watchlist_view(request):
     try:
-        listings = Watchlist.objects.get(prospect=request.user).listings
+        listings = Watchlist.objects.get(prospect=request.user).listings.all()
     except:
-        listings=[]
+        listings = list()
     return render(request, "auctions/user_watchlist.html", context={"listings": listings})
 
+
 @login_required
-def add_to_watchlist(request,pk):
-    watchlist = Watchlist(prospect=request.user)
+def add_to_watchlist(request, pk):
+    try:
+        watchlist = Watchlist.objects.get(prospect=request.user)
+    except:
+        watchlist = Watchlist(prospect=request.user)
+    watchlist.save()
     watchlist.listings.add(Listing.objects.get(pk=pk))
     watchlist.save()
-    return HttpResponseRedirect(reverse(""))
+    return HttpResponseRedirect(reverse("user-watchlist"))
