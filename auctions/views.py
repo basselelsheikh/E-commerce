@@ -66,7 +66,7 @@ def register(request):
         return render(request, "auctions/register.html")
 
 
-@login_required(login_url='/login')
+@login_required
 def create_listing(request):
     # if form is submitted
     if request.method == "POST":

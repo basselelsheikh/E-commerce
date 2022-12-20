@@ -32,12 +32,10 @@ class Listing(models.Model):
         return "$%s" % self.current_price if self.current_price else ""
 
     def get_absolute_url(self):
-        # adjust model detail view
-        
         return reverse('listing-detail', args=[str(self.id)])
 
     def __str__(self) -> str:
-        return self.title
+        return self.title.capitalize()
 
 
 class Bid(models.Model):
@@ -46,11 +44,7 @@ class Bid(models.Model):
     listing = models.ForeignKey(
         Listing, on_delete=models.CASCADE, related_name="bids")
     price = models.DecimalField(max_digits=20, decimal_places=2)
-
-    def get_absolute_url(self):
-        # adjust model detail view
-        return reverse('model-detail-view', args=[str(self.id)])
-
+    
     def __str__(self) -> str:
         return f"{self.bidder}: {self.price} on {self.listing}" 
 
@@ -61,10 +55,6 @@ class Comment(models.Model):
     listing = models.ForeignKey(
         Listing, on_delete=models.CASCADE, related_name="comments")
     text = models.TextField()
-
-    def get_absolute_url(self):
-        # adjust model detail view
-        return reverse('model-detail-view', args=[str(self.id)])
 
     def __str__(self) -> str:
         return f"{self.commenter} commented on {self.listing}"
@@ -77,11 +67,10 @@ class Category(models.Model):
         verbose_name_plural = "categories"
 
     def get_absolute_url(self):
-        # adjust model detail view
         return reverse('category-detail', args=[str(self.id)])
 
     def __str__(self) -> str:
-        return self.name
+        return self.name.capitalize()
 
 class Watchlist(models.Model):
     listings = models.ManyToManyField(Listing, blank=True, related_name="watchlists")
