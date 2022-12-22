@@ -30,9 +30,6 @@
 <!-- PROJECT LOGO -->
 <br />
 <div align="center">
-  <a href="https://github.com/basselelsheikh/ecommerce">
-    <img src="images/logo.png" alt="Logo" width="80" height="80">
-  </a>
 
 <h3 align="center">ecommerce</h3>
 
@@ -51,39 +48,8 @@
 </div>
 
 
-
-<!-- TABLE OF CONTENTS -->
-<details>
-  <summary>Table of Contents</summary>
-  <ol>
-    <li>
-      <a href="#about-the-project">About The Project</a>
-      <ul>
-        <li><a href="#built-with">Built With</a></li>
-      </ul>
-    </li>
-    <li>
-      <a href="#getting-started">Getting Started</a>
-      <ul>
-        <li><a href="#prerequisites">Prerequisites</a></li>
-        <li><a href="#installation">Installation</a></li>
-      </ul>
-    </li>
-    <li><a href="#usage">Usage</a></li>
-    <li><a href="#roadmap">Roadmap</a></li>
-    <li><a href="#contributing">Contributing</a></li>
-    <li><a href="#license">License</a></li>
-    <li><a href="#contact">Contact</a></li>
-    <li><a href="#acknowledgments">Acknowledgments</a></li>
-  </ol>
-</details>
-
-
-
 <!-- ABOUT THE PROJECT -->
 ## About The Project
-
-[![Product Name Screen Shot][product-screenshot]](https://example.com)
 
 This is Harvard's CS50W project #2. <br/>
 Users can register accounts. 
@@ -91,7 +57,6 @@ Users can create auction listings, bid on listings, add items to a watchlist, co
 listings by categories
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
-
 
 
 ### Built With
@@ -124,20 +89,23 @@ python manage.py runserver
 <!-- USAGE EXAMPLES -->
 ## Usage
 
-there are three preregistered accounts for you to test:
-username: bassel 
+there are three preregistered accounts for you to test: </br>
+Bassel's account is the superuser </br>
+username: bassel </br>
 password: mmmm
 
-username: ahmed 
+username: ahmed </br>
 password: mmmm
 
-username: ali 
+username: ali </br>
 password: mmmm
 
-username: mohamed 
+username: mohamed </br>
 password: mmmm
 
-You are free to login with any account to test the website's functions
+there are also two auction listings available for testing. 1 available and 1 closed. (You can add more) </br>
+
+You are free to login with any account to test the website's functions </br>
 
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
@@ -157,10 +125,6 @@ Distributed under the MIT License. See `LICENSE.txt` for more information.
 Bassel Elsheikh  - bassel.elsheikh@gmail.com
 
 Project Link: [https://github.com/basselelsheikh/ecommerce](https://github.com/basselelsheikh/ecommerce)
-
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
-
-
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
