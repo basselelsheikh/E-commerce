@@ -63,7 +63,7 @@ listings by categories
 
 
 * [![Bootstrap][Bootstrap.com]][Bootstrap-url]
-* Django
+* **Django**
 
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
@@ -91,6 +91,7 @@ python manage.py runserver
 
 there are three preregistered accounts for you to test: </br>
 Bassel's account is the superuser </br>
+
 username: bassel </br>
 password: mmmm
 
