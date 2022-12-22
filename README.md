@@ -89,7 +89,7 @@ python manage.py runserver
 <!-- USAGE EXAMPLES -->
 ## Usage
 
-there are three preregistered accounts for you to test: </br>
+There are three preregistered accounts for you to test: </br>
 Bassel's account is the superuser </br>
 
 username: bassel </br>
@@ -104,7 +104,7 @@ password: mmmm
 username: mohamed </br>
 password: mmmm
 
-there are also two auction listings available for testing. 1 available and 1 closed. (You can add more) </br>
+There are also two auction listings available for testing. 1 available and 1 closed. (You can add more) </br>
 
 You are free to login with any account to test the website's functions </br>
 
