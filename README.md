@@ -70,21 +70,41 @@ listings by categories
 
 
 
-<!-- GETTING STARTED -->
-## Getting Started
 
-1. Clone the project
-2. Run a command window in the project's main directory (where manage.py is found)
-3. Run the following command
+<!-- RUN LOCALLY -->
+## Run Locally
+
+Clone the project
+
+```bash
+  git clone https://github.com/basselelsheikh/E-commerce.git
 ```
-python manage.py runserver
+
+Go to the project directory
+
+```bash
+  cd E-commerce
 ```
-4. Enter your localhost url in a browser (e.g., http://127.0.0.1:8000/)
+
+Install dependencies
+
+```bash
+  pip install django
+```
+
+```bash
+  pip install django-crispy-forms
+```
+Start the server
+
+```bash
+  python manage.py runserver
+```
 
 
+  Open http://127.0.0.1:8000/ in a browser
+  
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
-
-
 
 <!-- USAGE EXAMPLES -->
 ## Usage
